@@ -36,6 +36,7 @@
         top: 30,
         bottom: 30
       },
+      minItemWidth = 2,
       stacked = false,
       rotateTicks = false,
       timeIsRelative = false,
@@ -279,7 +280,8 @@
             .attr("x", getXPos)
             .attr("y", getStackPosition)
             .attr("width", function(d, i) {
-              return (d.ending_time - d.starting_time) * scaleFactor;
+              var raw = (d.ending_time - d.starting_time) * scaleFactor;
+              return raw >= minItemWidth ? raw : minItemWidth;
             })
             .attr("cy", function(d, i) {
               return getStackPosition(d, i) + itemHeight / 2;
@@ -509,6 +511,12 @@
     timeline.itemMargin = function(h) {
       if (!arguments.length) return itemMargin;
       itemMargin = h;
+      return timeline;
+    };
+
+    timeline.minItemWidth = function(h) {
+      if (!arguments.length) return minItemWidth;
+      minItemWidth = h;
       return timeline;
     };
 
